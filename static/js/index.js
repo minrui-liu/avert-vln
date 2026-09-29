@@ -107,9 +107,6 @@
       status.textContent = 'Use the video controls to start or resume playback.';
     }
   }
-  document.querySelectorAll('[data-replay]').forEach(button => {
-    button.addEventListener('click', () => seekAndPlay(document.getElementById(button.dataset.replay), 0));
-  });
   document.querySelectorAll('[data-video][data-time]').forEach(button => {
     button.addEventListener('click', () => seekAndPlay(document.getElementById(button.dataset.video), Number(button.dataset.time)));
   });
