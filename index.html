@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AVERT-VLN — Visual Error Recovery and Training</title>
+  <meta name="description" content="AVERT-VLN connects online human-assisted recovery and offline preference learning with a shared vision-language Monitor for navigation in unseen environments.">
+  <meta name="author" content="Minrui Liu, Jingke Wang, Yuehao Huang, Hao Su, Jiajun Lv, Yukai Ma, Yong Liu">
+  <meta name="keywords" content="AVERT-VLN, vision-and-language navigation, error recovery, preference learning, LostNav, embodied AI">
+  <meta name="theme-color" content="#fbfaf7">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AVERT-VLN: Abstention-aware Visual Error Recovery and Training for Vision-and-Language Navigation">
+  <meta property="og:description" content="One Monitor. Two feedback loops. Recover during navigation, and learn from corrective interactions.">
+  <meta property="og:image" content="static/images/opening-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="citation_title" content="AVERT-VLN: Abstention-aware Visual Error Recovery and Training for Vision-and-Language Navigation">
+  <meta name="citation_author" content="Liu, Minrui">
+  <meta name="citation_author" content="Wang, Jingke">
+  <meta name="citation_author" content="Huang, Yuehao">
+  <meta name="citation_author" content="Su, Hao">
+  <meta name="citation_author" content="Lv, Jiajun">
+  <meta name="citation_author" content="Ma, Yukai">
+  <meta name="citation_author" content="Liu, Yong">
+  <link rel="icon" href="static/images/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="static/css/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <script defer src="static/js/index.js"></script>
+  <noscript><style>[role="tabpanel"][hidden]{display:block!important;margin-top:28px}.tabs-control,.text-action,.chapter-links,.nav-toggle,.copy-button,.figure-hint{display:none!important}.nav-links{display:flex;position:static;flex-direction:row;padding:0;border:0;font-size:10px;gap:10px}.reading-progress{display:none}</style></noscript>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="wordmark" href="#top" aria-label="AVERT-VLN home">AVERT<span>-VLN</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="page-navigation">Menu</button>
+      <nav class="nav-links" id="page-navigation" aria-label="Page sections">
+        <a href="#overview">Overview</a>
+        <a href="#method">Method</a>
+        <a href="#visual-evidence">In action</a>
+        <a href="#results">Results</a>
+        <a href="#monitor">Monitor &amp; data</a>
+      </nav>
+    </div>
+    <div class="reading-progress" aria-hidden="true"></div>
+  </header>
+
+  <main id="main-content">
+    <section class="publication-header centered" id="top" aria-labelledby="paper-title">
+      <div class="container is-max-desktop">
+        <p class="eyebrow">Vision-and-language navigation</p>
+        <h1 class="publication-title" id="paper-title">AVERT<span>-VLN</span></h1>
+        <h2 class="publication-subtitle">Abstention-aware Visual Error Recovery and Training<br class="desktop-break"> for Vision-and-Language Navigation</h2>
+        <div class="publication-authors" aria-label="Authors">
+          <span class="author-block">Minrui Liu<sup>*</sup></span>
+          <span class="author-block">Jingke Wang<sup>*</sup></span>
+          <span class="author-block">Yuehao Huang</span>
+          <span class="author-block">Hao Su</span>
+          <span class="author-block">Jiajun Lv</span>
+          <span class="author-block">Yukai Ma</span>
+          <span class="author-block">Yong Liu</span>
+        </div>
+        <div class="publication-links" aria-label="Research resources">
+          <button class="resource-button" type="button" aria-disabled="true" title="Code — coming soon">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.13c-3.1.67-3.75-1.31-3.75-1.31-.51-1.28-1.24-1.63-1.24-1.63-1.02-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 .17 1.66 1.38 3.23.98.1-.72.39-1.2.7-1.48-2.47-.28-5.07-1.24-5.07-5.49 0-1.21.43-2.2 1.14-2.97-.11-.28-.5-1.41.11-2.94 0 0 .93-.3 3.05 1.14a10.58 10.58 0 0 1 5.55 0c2.12-1.44 3.05-1.14 3.05-1.14.61 1.53.22 2.66.11 2.94.71.77 1.14 1.76 1.14 2.97 0 4.26-2.61 5.21-5.1 5.48.4.35.76 1.02.76 2.06v3.05c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg>
+            <span>Code</span><span class="availability">Coming soon</span>
+          </button>
+          <button class="resource-button secondary" type="button" aria-disabled="true" title="arXiv link is not available yet" aria-label="arXiv, link not available yet">
+            <img src="static/images/arxiv.svg" alt="" aria-hidden="true" width="18" height="18">
+            <span>arXiv</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero-teaser" aria-label="AVERT-VLN overview video">
+      <div class="page-container">
+        <div class="media-shell">
+          <video id="opening-video" width="1920" height="1080" poster="static/images/opening-poster.jpg" controls muted autoplay playsinline preload="metadata" aria-label="Eleven-second overview of navigation, Monitor detection and recovery" aria-describedby="opening-description">
+            <source src="static/videos/opening.mp4" type="video/mp4">
+            Your browser does not support embedded video.
+          </video>
+        </div>
+        <div class="media-caption" id="opening-description">
+          <strong>Detect a deviation. Recover the task. Learn from the correction.</strong>
+          <span>R2R / RxR · Recorded navigation · 11 seconds</span>
+        </div>
+        <div class="teaser-footer">
+          <span>Online recovery</span><span class="dot" aria-hidden="true"></span><span>Offline preference learning</span><span class="dot" aria-hidden="true"></span><button class="text-action" type="button" data-replay="opening-video">Replay overview</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tint" id="overview" aria-labelledby="overview-heading">
+      <div class="page-container overview-grid">
+        <div>
+          <p class="eyebrow">The central idea</p>
+          <h2 class="overview-lede" id="overview-heading">One Monitor.<br><span>Two feedback loops.</span></h2>
+          <p>When a navigation agent goes off track, a correction should do more than fix the current task. It should also inform the next decision.</p>
+          <div class="loop-summary">
+            <span class="loop-index" aria-hidden="true">01</span>
+            <div><h4>Recover during execution</h4><p>Recognize semantic deviations and selectively request corrective guidance.</p></div>
+          </div>
+          <div class="loop-summary">
+            <span class="loop-index" aria-hidden="true">02</span>
+            <div><h4>Learn after the interaction</h4><p>Turn deviation-associated failures into targeted decision-level preferences.</p></div>
+          </div>
+        </div>
+        <div class="abstract-copy">
+          <h3>Abstract</h3>
+          <p>Deploying vision-and-language navigation (VLN) agents in unseen environments remains challenging because unfamiliar layouts and visual conditions can cause autonomous execution to go off track. Rather than relying on continuous human supervision, a practical strategy is to let the agent selectively request corrective guidance when needed, use it to recover the ongoing task, and reuse the resulting corrective interactions to improve subsequent navigation.</p>
+          <p>We propose Abstention-aware Visual Error Recovery and Training for Vision-and-Language Navigation (AVERT-VLN), a closed-loop framework that uses a plug-in vision-language Monitor for online human-assisted recovery and offline preference learning. The Monitor operates separately from navigation decision generation and assesses instruction–execution consistency from the instruction, visual history, and current observation. To train the Monitor for deviation recognition, we construct LostNav Dataset with 20K counterfactual risk trajectories and rule-based deviation labels. The Monitor is first fine-tuned on 40K normal trajectories to assess instruction progress and then jointly fine-tuned on normal and risk trajectories to recognize semantic deviations.</p>
+          <p>At runtime, Asynchronous Sidecar Monitoring evaluates execution alongside the navigation model. When the controller accepts a Lost verdict, it suspends autonomous execution and requests human guidance for recovery. For offline policy improvement, Trajectory-Anchored Preference Learning converts deviation-associated failures into decision-level preference pairs under shared decision contexts, restricting supervision to the decisions targeted for correction. Under human-assisted evaluation, the full AVERT-VLN system achieves success rates of 76.2% and 66.3% on the val-unseen splits of R2R-CE and RxR-CE, respectively. The same monitoring and human-assisted recovery interface also improves success rates across the three evaluated navigation architectures.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="method" aria-labelledby="method-heading">
+      <div class="page-container">
+        <div class="section-heading centered">
+          <p class="eyebrow">How it works</p>
+          <h2 id="method-heading">From recognizing errors to learning better decisions.</h2>
+          <p>A shared vision-language Monitor connects a runtime recovery loop with an offline learning loop, without generating the navigation actions itself.</p>
+        </div>
+        <figure>
+          <button class="figure-button" type="button" data-figure="static/images/pipeline.webp" data-caption="AVERT-VLN: asynchronous sidecar monitoring and trajectory-anchored preference learning" aria-label="Enlarge the AVERT-VLN method diagram">
+            <img src="static/images/pipeline.webp" alt="The navigation model runs alongside a Monitor. Pass allows navigation to continue; Lost triggers abstention and human guidance. Offline, the preceding Pass boundary anchors a shared-context preference pair for decision-focused DPO." width="2400" height="879" loading="lazy" decoding="async">
+            <span class="figure-hint">Click to enlarge</span>
+          </button>
+          <figcaption class="figure-caption">The framework from the paper. Solid arrows denote online execution; dashed arrows denote offline processing.</figcaption>
+        </figure>
+        <div class="method-columns">
+          <article class="method-block">
+            <p class="method-label">Loop 01 · Online recovery</p>
+            <h3>Asynchronous Sidecar Monitoring</h3>
+            <p>The Monitor reads the instruction, visual history, and current observation alongside ongoing navigation. An accepted <strong class="coral">Lost</strong> verdict cancels pending autonomous actions and requests a pixel goal or a local turn from a human. Navigation resumes after correction.</p>
+            <div class="process" aria-label="Online process"><span>Monitor</span><i aria-hidden="true">→</i><span>Abstain</span><i aria-hidden="true">→</i><span>Guide</span><i aria-hidden="true">→</i><span>Resume</span></div>
+          </article>
+          <article class="method-block offline">
+            <p class="method-label">Loop 02 · Offline improvement</p>
+            <h3>Trajectory-Anchored Preference Learning</h3>
+            <p>Trace a deviation back to the nearest preceding <strong>Pass</strong> boundary. Under the same decision context, pair the original decision with a correction-derived preferred decision. Decision-focused DPO targets corrected direction-selection and visual-grounding tokens.</p>
+            <div class="process" aria-label="Offline process"><span>Locate anchor</span><i aria-hidden="true">→</i><span>Pair decisions</span><i aria-hidden="true">→</i><span>Update policy</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tint" id="visual-evidence" aria-labelledby="evidence-heading">
+      <div class="page-container">
+        <div class="evidence-heading">
+          <div class="section-heading"><p class="eyebrow">See the two loops</p><h2 id="evidence-heading">AVERT-VLN in action.</h2></div>
+          <div class="tabs-control" role="tablist" aria-label="Demonstration type" data-tab-group="evidence">
+            <button id="runtime-tab" type="button" role="tab" aria-selected="true" aria-controls="runtime-panel" tabindex="0">01 · Runtime recovery</button>
+            <button id="learning-tab" type="button" role="tab" aria-selected="false" aria-controls="learning-panel" tabindex="-1">02 · Preference learning</button>
+          </div>
+        </div>
+        <div id="runtime-panel" role="tabpanel" aria-labelledby="runtime-tab" tabindex="0">
+          <p class="evidence-intro">Follow the observation history, the Monitor’s review boundary, and the transition from a Lost verdict to corrective guidance and resumed navigation.</p>
+          <div class="media-shell">
+            <div class="video-toolbar"><h3>Runtime monitoring &amp; recovery interface</h3><span>Illustrative replay · 60 seconds</span></div>
+            <video id="runtime-video" width="1920" height="1080" poster="static/images/runtime-poster.jpg" controls muted playsinline preload="none" aria-label="Runtime monitoring and recovery interface replay" aria-describedby="runtime-description">
+              <source src="static/videos/runtime.mp4" type="video/mp4">
+              Your browser does not support embedded video.
+            </video>
+          </div>
+          <div class="chapter-links" aria-label="Runtime video chapters">
+            <button type="button" data-video="runtime-video" data-time="12">00:12 <span>Monitoring</span></button>
+            <button type="button" data-video="runtime-video" data-time="30">00:30 <span>Lost verdict</span></button>
+            <button type="button" data-video="runtime-video" data-time="40">00:40 <span>Guidance</span></button>
+            <button type="button" data-video="runtime-video" data-time="50">00:50 <span>Resumption</span></button>
+          </div>
+          <p class="media-note" id="runtime-description"><strong>About this replay.</strong> Guidance here is reference-based; the video’s “human” labels illustrate the proposed interface, not live human input. Snapshot restoration is schematic, not physical reverse travel. In the proposed runtime controller, already-executed actions are not rolled back. A handoff alone does not establish recovery success.</p>
+        </div>
+        <div id="learning-panel" role="tabpanel" aria-labelledby="learning-tab" tabindex="0" hidden>
+          <p class="evidence-intro">Two selected autonomous RxR episodes compare the base policy with a DPO-updated continuation. Each video plays the base rollout first, then the DPO rollout—not a time-aligned race.</p>
+          <div class="case-selector">
+            <div class="tabs-control" role="tablist" aria-label="Preference-learning example" data-tab-group="cases">
+              <button id="bathroom-tab" type="button" role="tab" aria-selected="true" aria-controls="bathroom-panel" tabindex="0">Bathroom navigation</button>
+              <button id="bedroom-tab" type="button" role="tab" aria-selected="false" aria-controls="bedroom-panel" tabindex="-1">Bedroom to cupboards</button>
+            </div>
+          </div>
+          <div id="bathroom-panel" role="tabpanel" aria-labelledby="bathroom-tab" tabindex="0">
+            <div class="media-shell">
+              <div class="video-toolbar"><h3>Case 5015 · Finding the bathroom</h3><span>Base vs. DPO · 28 seconds</span></div>
+              <video id="bathroom-video" width="1920" height="1080" poster="static/images/preference-bathroom-poster.jpg" controls muted playsinline preload="none" aria-label="Base versus DPO bathroom-navigation comparison" aria-describedby="learning-description">
+                <source src="static/videos/preference-bathroom.mp4" type="video/mp4">
+                Your browser does not support embedded video.
+              </video>
+            </div>
+            <p class="figure-caption">The base policy takes a wrong left turn. The DPO continuation reaches the bathroom; the clip shows both final outcomes.</p>
+          </div>
+          <div id="bedroom-panel" role="tabpanel" aria-labelledby="bedroom-tab" tabindex="0" hidden>
+            <div class="media-shell">
+              <div class="video-toolbar"><h3>Case 5219 · From bedroom to cupboards</h3><span>Base vs. DPO · 34 seconds</span></div>
+              <video id="bedroom-video" width="1920" height="1080" poster="static/images/preference-bedroom-poster.jpg" controls muted playsinline preload="none" aria-label="Base versus DPO bedroom-to-cupboard navigation comparison" aria-describedby="learning-description">
+                <source src="static/videos/preference-bedroom.mp4" type="video/mp4">
+                Your browser does not support embedded video.
+              </video>
+            </div>
+            <p class="figure-caption">The base policy takes a wrong right turn. The DPO continuation follows the instruction through the bedroom toward the cupboards.</p>
+          </div>
+          <p class="media-note" id="learning-description">Monitoring and human recovery are disabled in these autonomous comparisons. They are selected qualitative examples, not aggregate success-rate or latency measurements. Use the player’s fullscreen view to inspect the instructions and observation history.</p>
+          <details class="comparison-figure">
+            <summary>View the corresponding qualitative figure from the paper</summary>
+            <button class="figure-button" type="button" data-figure="static/images/preference-comparison.webp" data-caption="Selected autonomous RxR examples: original policy and DPO-updated policy" aria-label="Enlarge qualitative DPO comparisons">
+              <img src="static/images/preference-comparison.webp" alt="Two navigation tasks, each with six original-policy observations and six DPO-policy observations plus a top-down route. Original trajectories fail and DPO trajectories succeed. Gold frames identify shared observations, not synchronized times." width="2400" height="1662" loading="lazy" decoding="async">
+              <span class="figure-hint">Click to enlarge</span>
+            </button>
+          </details>
+        </div>
+        <details class="media-note provenance-note">
+          <summary>Visualization and editing notes</summary>
+          <p>The overview and runtime videos are edited illustrations, not real-time latency measurements. The overview’s two-second Lost pause is editorial, and its diagnosis refers to an earlier query view. Top-down maps are privileged visualizations, not policy inputs. In the overview, green is the simulator’s shortest-path overlay—not an instruction-ground-truth route—and red is an editorial agent-trace palette, not a per-segment error annotation. A recorded-pose reset can connect distant positions in a trace without continuous physical traversal.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section" id="results" aria-labelledby="results-heading">
+      <div class="page-container">
+        <div class="section-heading centered"><p class="eyebrow">Quantitative evaluation</p><h2 id="results-heading">Recovery across architectures.<br>Improvement beyond the interaction.</h2><p>Evaluation on unseen environments, with assisted full-system results reported separately from autonomous policy learning.</p></div>
+        <div class="stats-strip">
+          <article class="stat"><p class="stat-context">R2R-CE · Human-assisted</p><span class="stat-number">76.2<small>% SR</small></span><p>Full AVERT-VLN system<br><strong>+11.9 pp</strong> over DualVLN</p></article>
+          <article class="stat"><p class="stat-context">RxR-CE · Human-assisted</p><span class="stat-number">66.3<small>% SR</small></span><p>Full AVERT-VLN system<br><strong>+4.9 pp</strong> over DualVLN</p></article>
+          <article class="stat"><p class="stat-context">RxR-CE val-unseen · Autonomous</p><span class="stat-number">+2.15<small>pp</small></span><p>DualVLN System 2 SR after DPO<br><strong>52.88 → 55.03</strong>, without assistance</p></article>
+        </div>
+        <div class="results-header">
+          <h3>Navigation on val-unseen</h3>
+          <div class="tabs-control" role="tablist" aria-label="Navigation benchmark" data-tab-group="benchmarks">
+            <button id="r2r-tab" type="button" role="tab" aria-selected="true" aria-controls="r2r-panel" tabindex="0">R2R-CE</button>
+            <button id="rxr-tab" type="button" role="tab" aria-selected="false" aria-controls="rxr-panel" tabindex="-1">RxR-CE</button>
+          </div>
+        </div>
+        <div id="r2r-panel" role="tabpanel" aria-labelledby="r2r-tab" tabindex="0">
+          <div class="results-table-wrap" tabindex="0" aria-label="Scrollable R2R-CE results">
+            <table class="results-table"><caption>R2R-CE val-unseen navigation results</caption><thead><tr><th scope="col">Navigation configuration</th><th scope="col">Assisted</th><th scope="col">NE ↓</th><th scope="col">OS ↑</th><th scope="col">SR ↑</th><th scope="col">SPL ↑</th></tr></thead><tbody>
+              <tr><td>StreamVLN</td><td>No</td><td>4.98</td><td>64.2</td><td>56.9</td><td>51.9</td></tr>
+              <tr><td>+ AVERT-VLN recovery<sup>†</sup><span class="row-label">StreamVLN · unchanged checkpoint</span></td><td>Yes</td><td>3.31</td><td>82.3</td><td>63.7</td><td>42.6</td></tr>
+              <tr><td>InternVLA-N1<span class="row-label">System 2</span></td><td>No</td><td>4.89</td><td>60.6</td><td>55.4</td><td>52.1</td></tr>
+              <tr><td>+ AVERT-VLN recovery<sup>†</sup><span class="row-label">InternVLA-N1 · unchanged checkpoint</span></td><td>Yes</td><td>2.97</td><td>78.2</td><td>69.9</td><td>28.7</td></tr>
+              <tr><td>DualVLN</td><td>No</td><td>4.05</td><td>70.7</td><td>64.3</td><td>58.5</td></tr>
+              <tr><td>+ AVERT-VLN recovery<sup>†</sup><span class="row-label">DualVLN · unchanged checkpoint</span></td><td>Yes</td><td>2.61</td><td>80.7</td><td>75.5</td><td>62.3</td></tr>
+              <tr class="ours"><td>Full AVERT-VLN<sup>‡</sup><span class="row-label">DPO + DualVLN</span></td><td>Yes</td><td>2.60</td><td>82.5</td><td>76.2</td><td>63.4</td></tr>
+            </tbody></table>
+          </div>
+        </div>
+        <div id="rxr-panel" role="tabpanel" aria-labelledby="rxr-tab" tabindex="0" hidden>
+          <div class="results-table-wrap" tabindex="0" aria-label="Scrollable RxR-CE results">
+            <table class="results-table"><caption>RxR-CE val-unseen navigation results</caption><thead><tr><th scope="col">Navigation configuration</th><th scope="col">Assisted</th><th scope="col">NE ↓</th><th scope="col">SR ↑</th><th scope="col">SPL ↑</th><th scope="col">nDTW ↑</th></tr></thead><tbody>
+              <tr><td>StreamVLN</td><td>No</td><td>6.22</td><td>52.9</td><td>46.0</td><td>61.9</td></tr>
+              <tr><td>+ AVERT-VLN recovery<sup>†</sup><span class="row-label">StreamVLN · unchanged checkpoint</span></td><td>Yes</td><td>5.58</td><td>55.0</td><td>47.0</td><td>63.7</td></tr>
+              <tr><td>InternVLA-N1<span class="row-label">System 2</span></td><td>No</td><td>6.41</td><td>49.5</td><td>41.8</td><td>62.6</td></tr>
+              <tr><td>+ AVERT-VLN recovery<sup>†</sup><span class="row-label">InternVLA-N1 · unchanged checkpoint</span></td><td>Yes</td><td>4.53</td><td>57.8</td><td>32.7</td><td>57.3</td></tr>
+              <tr><td>DualVLN</td><td>No</td><td>4.58</td><td>61.4</td><td>51.8</td><td>70.0</td></tr>
+              <tr><td>+ AVERT-VLN recovery<sup>†</sup><span class="row-label">DualVLN · unchanged checkpoint</span></td><td>Yes</td><td>3.93</td><td>65.6</td><td>43.0</td><td>71.7</td></tr>
+              <tr class="ours"><td>Full AVERT-VLN<sup>‡</sup><span class="row-label">DPO + DualVLN</span></td><td>Yes</td><td>3.83</td><td>66.3</td><td>48.0</td><td>72.0</td></tr>
+            </tbody></table>
+          </div>
+        </div>
+        <p class="table-note"><sup>†</sup> Monitor + human-assisted recovery, with no additional navigation-model training. <sup>‡</sup> DPO-trained System 2 and subsequently fine-tuned System 1, evaluated with Monitor + human-assisted recovery. NE is in meters; OS, SR, SPL, and nDTW are percentages. These are selected rows from the paper’s main comparison.</p>
+        <p class="table-note"><strong>Success and efficiency are different.</strong> The full system adds 0.7 SR points over recovery alone on each benchmark. On RxR-CE, its SPL is 48.0 versus 51.8 for the unassisted DualVLN baseline; higher success does not imply uniformly shorter or more faithful paths. The separate autonomous ablation evaluates System 2 only.</p>
+      </div>
+    </section>
+
+    <section class="section section-white" id="monitor" aria-labelledby="monitor-heading">
+      <div class="page-container">
+        <div class="section-heading"><p class="eyebrow">The shared Monitor</p><h2 id="monitor-heading">Learn what going off track looks like.</h2></div>
+        <div class="monitor-grid">
+          <div>
+            <h3>Small model.<br>Navigation-specific judgment.</h3>
+            <p>A <strong>Qwen3.5-4B</strong> Monitor is trained to assess instruction progress and recognize semantic deviations—not simply whether the agent has moved away from a geometric path.</p>
+            <p>On the <strong>LostAware Benchmark</strong>, it reaches <strong>63.38% Lost recall</strong> and <strong>59.52% F1</strong>. The benchmark contains 1,095 paired Lost/Pass states, 2,190 states in total, held out for evaluation.</p>
+            <p class="scope-note">The strongest displayed baseline F1 is 49.79%. Diagnostic reasoning scores in the figure are model-judged, not measured human recovery outcomes. Higher recall does not imply uniformly higher precision.</p>
+          </div>
+          <figure>
+            <button class="figure-button" type="button" data-figure="static/images/monitor-results.webp" data-caption="Diagnostic reasoning: 7 models. Lost-state recognition: 18 models." aria-label="Enlarge Monitor evaluation figure">
+              <img src="static/images/monitor-results.webp" alt="A six-axis diagnostic-reasoning comparison alongside Lost-state recall and F1 bars for 18 models. The AVERT-VLN Monitor has 63.38 recall and 59.52 F1." width="2400" height="1192" loading="lazy" decoding="async">
+              <span class="figure-hint">Click to enlarge</span>
+            </button>
+            <figcaption class="figure-caption">Left: diagnostic reasoning. Right: Lost-state recognition. Original figure from the latest manuscript.</figcaption>
+          </figure>
+        </div>
+        <details class="dataset-details">
+          <summary>Inside LostNav: 40K normal trajectories + 20K counterfactual risk trajectories</summary>
+          <div class="dataset-grid">
+            <figure>
+              <button class="figure-button" type="button" data-figure="static/images/dataset.webp" data-caption="LostNav construction: counterfactual failure generation, simulator rollout and reasoning annotation" aria-label="Enlarge LostNav dataset construction figure">
+                <img src="static/images/dataset.webp" alt="A wrong-target corridor is selected instead of the instructed stairs, followed by a simulator rollout with eight history frames and a generated diagnostic explanation." width="2400" height="2586" loading="lazy" decoding="async">
+                <span class="figure-hint">Click to enlarge</span>
+              </button>
+            </figure>
+            <div>
+              <p class="eyebrow">Two-stage Monitor training</p>
+              <h3>Progress first.<br>Deviations next.</h3>
+              <p>The Monitor first learns instruction progress from <strong>40K normal trajectories</strong>. Joint training then adds <strong>20K counterfactual risk trajectories</strong> from LostNav, with rule-based deviation labels and generated diagnostic explanations.</p>
+              <p>Risk generation varies explore/exploit behavior and region/object targets. Visibility and reachability checks support controlled wrong-target rollouts rather than arbitrary image corruption.</p>
+              <p class="scope-note">Privileged scene and navigation information supports dataset construction only. Monitor inputs remain the instruction, visual history, and current observation. LostAware is a separate evaluation benchmark, not the training set.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="bibtex-section" aria-labelledby="citation-heading">
+      <div class="page-container">
+        <div class="bibtex-heading"><h2 id="citation-heading">Citation</h2><button class="copy-button" id="copy-citation" type="button">Copy BibTeX</button></div>
+        <pre><code id="citation-text">@misc{liu2026avertvln,
+  title  = {AVERT-VLN: Abstention-aware Visual Error Recovery and Training
+            for Vision-and-Language Navigation},
+  author = {Minrui Liu and Jingke Wang and Yuehao Huang and Hao Su
+            and Jiajun Lv and Yukai Ma and Yong Liu},
+  year   = {2026}
+}</code></pre>
+        <p class="citation-note">Manuscript citation; the arXiv identifier and publication details will be added when available.</p>
+        <p class="visually-hidden" id="page-status" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-container footer-inner">
+      <div class="footer-wordmark">AVERT<span>-VLN</span></div>
+      <p>Adapted from the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener noreferrer">Academic Project Page Template</a> and <a href="https://nerfies.github.io" target="_blank" rel="noopener noreferrer">Nerfies</a>. Website design adapted under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener noreferrer">CC BY-SA 4.0</a>; research media retain their respective rights.</p>
+    </div>
+  </footer>
+
+  <dialog class="figure-dialog" id="figure-dialog" aria-labelledby="figure-dialog-title">
+    <div class="dialog-bar"><p id="figure-dialog-title"></p><button class="dialog-close" type="button">Close</button></div>
+    <img class="dialog-image" id="dialog-image" alt="">
+  </dialog>
+</body>
+</html>
