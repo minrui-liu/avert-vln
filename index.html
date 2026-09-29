@@ -83,10 +83,9 @@
         </div>
         <div class="media-caption" id="opening-description">
           <strong>Detect a deviation. Recover the task. Learn from the correction.</strong>
-          <span>R2R / RxR · Recorded navigation · 11 seconds</span>
         </div>
         <div class="teaser-footer">
-          <span>Online recovery</span><span class="dot" aria-hidden="true"></span><span>Offline preference learning</span><span class="dot" aria-hidden="true"></span><button class="text-action" type="button" data-replay="opening-video">Replay overview</button>
+          <button class="text-action" type="button" data-replay="opening-video">Replay overview</button>
         </div>
       </div>
     </section>
@@ -127,7 +126,6 @@
             <img src="static/images/pipeline.webp" alt="The navigation model runs alongside a Monitor. Pass allows navigation to continue; Lost triggers abstention and human guidance. Offline, the preceding Pass boundary anchors a shared-context preference pair for decision-focused DPO." width="2400" height="879" loading="lazy" decoding="async">
             <span class="figure-hint">Click to enlarge</span>
           </button>
-          <figcaption class="figure-caption">The framework from the paper. Solid arrows denote online execution; dashed arrows denote offline processing.</figcaption>
         </figure>
         <div class="method-columns">
           <article class="method-block">
@@ -156,9 +154,9 @@
           </div>
         </div>
         <div id="runtime-panel" role="tabpanel" aria-labelledby="runtime-tab" tabindex="0">
-          <p class="evidence-intro">Follow the observation history, the Monitor’s review boundary, and the transition from a Lost verdict to corrective guidance and resumed navigation.</p>
+          <p class="evidence-intro">From a Lost verdict to guidance and resumed navigation.</p>
           <div class="media-shell">
-            <div class="video-toolbar"><h3>Runtime monitoring &amp; recovery interface</h3><span>Illustrative replay · 60 seconds</span></div>
+            <div class="video-toolbar"><h3>Runtime monitoring &amp; recovery</h3></div>
             <video id="runtime-video" width="1920" height="1080" poster="static/images/runtime-poster.jpg" controls muted playsinline preload="none" aria-label="Runtime monitoring and recovery interface replay" aria-describedby="runtime-description">
               <source src="static/videos/runtime.mp4" type="video/mp4">
               Your browser does not support embedded video.
@@ -170,10 +168,10 @@
             <button type="button" data-video="runtime-video" data-time="40">00:40 <span>Guidance</span></button>
             <button type="button" data-video="runtime-video" data-time="50">00:50 <span>Resumption</span></button>
           </div>
-          <p class="media-note" id="runtime-description"><strong>About this replay.</strong> Guidance here is reference-based; the video’s “human” labels illustrate the proposed interface, not live human input. Snapshot restoration is schematic, not physical reverse travel. In the proposed runtime controller, already-executed actions are not rolled back. A handoff alone does not establish recovery success.</p>
+          <p class="media-note" id="runtime-description">Reference-guided replay, not live human intervention. Snapshot restoration is schematic, not a physical rollback; resumption alone does not establish recovery success.</p>
         </div>
         <div id="learning-panel" role="tabpanel" aria-labelledby="learning-tab" tabindex="0" hidden>
-          <p class="evidence-intro">Two selected autonomous RxR episodes compare the base policy with a DPO-updated continuation. Each video plays the base rollout first, then the DPO rollout—not a time-aligned race.</p>
+          <p class="evidence-intro">Autonomous navigation before and after DPO, shown sequentially.</p>
           <div class="case-selector">
             <div class="tabs-control" role="tablist" aria-label="Preference-learning example" data-tab-group="cases">
               <button id="bathroom-tab" type="button" role="tab" aria-selected="true" aria-controls="bathroom-panel" tabindex="0">Bathroom navigation</button>
@@ -182,27 +180,25 @@
           </div>
           <div id="bathroom-panel" role="tabpanel" aria-labelledby="bathroom-tab" tabindex="0">
             <div class="media-shell">
-              <div class="video-toolbar"><h3>Case 5015 · Finding the bathroom</h3><span>Base vs. DPO · 28 seconds</span></div>
+              <div class="video-toolbar"><h3>Finding the bathroom</h3></div>
               <video id="bathroom-video" width="1920" height="1080" poster="static/images/preference-bathroom-poster.jpg" controls muted playsinline preload="none" aria-label="Base versus DPO bathroom-navigation comparison" aria-describedby="learning-description">
                 <source src="static/videos/preference-bathroom.mp4" type="video/mp4">
                 Your browser does not support embedded video.
               </video>
             </div>
-            <p class="figure-caption">The base policy takes a wrong left turn. The DPO continuation reaches the bathroom; the clip shows both final outcomes.</p>
           </div>
           <div id="bedroom-panel" role="tabpanel" aria-labelledby="bedroom-tab" tabindex="0" hidden>
             <div class="media-shell">
-              <div class="video-toolbar"><h3>Case 5219 · From bedroom to cupboards</h3><span>Base vs. DPO · 34 seconds</span></div>
+              <div class="video-toolbar"><h3>From bedroom to cupboards</h3></div>
               <video id="bedroom-video" width="1920" height="1080" poster="static/images/preference-bedroom-poster.jpg" controls muted playsinline preload="none" aria-label="Base versus DPO bedroom-to-cupboard navigation comparison" aria-describedby="learning-description">
                 <source src="static/videos/preference-bedroom.mp4" type="video/mp4">
                 Your browser does not support embedded video.
               </video>
             </div>
-            <p class="figure-caption">The base policy takes a wrong right turn. The DPO continuation follows the instruction through the bedroom toward the cupboards.</p>
           </div>
-          <p class="media-note" id="learning-description">Monitoring and human recovery are disabled in these autonomous comparisons. They are selected qualitative examples, not aggregate success-rate or latency measurements. Use the player’s fullscreen view to inspect the instructions and observation history.</p>
+          <p class="media-note" id="learning-description">Selected examples, with monitoring and human guidance disabled.</p>
           <details class="comparison-figure">
-            <summary>View the corresponding qualitative figure from the paper</summary>
+            <summary>Qualitative comparison</summary>
             <button class="figure-button" type="button" data-figure="static/images/preference-comparison.webp" data-caption="Selected autonomous RxR examples: original policy and DPO-updated policy" aria-label="Enlarge qualitative DPO comparisons">
               <img src="static/images/preference-comparison.webp" alt="Two navigation tasks, each with six original-policy observations and six DPO-policy observations plus a top-down route. Original trajectories fail and DPO trajectories succeed. Gold frames identify shared observations, not synchronized times." width="2400" height="1662" loading="lazy" decoding="async">
               <span class="figure-hint">Click to enlarge</span>
@@ -210,8 +206,8 @@
           </details>
         </div>
         <details class="media-note provenance-note">
-          <summary>Visualization and editing notes</summary>
-          <p>The overview and runtime videos are edited illustrations, not real-time latency measurements. The overview’s two-second Lost pause is editorial, and its diagnosis refers to an earlier query view. Top-down maps are privileged visualizations, not policy inputs. In the overview, green is the simulator’s shortest-path overlay—not an instruction-ground-truth route—and red is an editorial agent-trace palette, not a per-segment error annotation. A recorded-pose reset can connect distant positions in a trace without continuous physical traversal.</p>
+          <summary>Video notes</summary>
+          <p>These are edited videos, not latency measurements. The overview’s pause is editorial; its diagnosis refers to an earlier view. Maps are visualization only: green shows the shortest path, not the instruction route, and red denotes the agent trace, not error labels. Pose-reset connections do not imply continuous travel.</p>
         </details>
       </div>
     </section>
@@ -277,7 +273,6 @@
               <img src="static/images/monitor-results.webp" alt="A six-axis diagnostic-reasoning comparison alongside Lost-state recall and F1 bars for 18 models. The AVERT-VLN Monitor has 63.38 recall and 59.52 F1." width="2400" height="1192" loading="lazy" decoding="async">
               <span class="figure-hint">Click to enlarge</span>
             </button>
-            <figcaption class="figure-caption">Left: diagnostic reasoning. Right: Lost-state recognition. Original figure from the latest manuscript.</figcaption>
           </figure>
         </div>
         <details class="dataset-details">
@@ -311,7 +306,6 @@
             and Jiajun Lv and Yukai Ma and Yong Liu},
   year   = {2026}
 }</code></pre>
-        <p class="citation-note">Manuscript citation; the arXiv identifier and publication details will be added when available.</p>
         <p class="visually-hidden" id="page-status" role="status" aria-live="polite"></p>
       </div>
     </section>
